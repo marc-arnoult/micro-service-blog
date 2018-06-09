@@ -1,0 +1,26 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    image: blog-frontend_hr
+    ports:
+      - 9090:8080
+      - 49153:49153
+    volumes:
+      - ./frontend:/code
+  
+  auth-service:
+    build: ./auth-service
+    image: blog-auth-service
+    ports:
+      - 9400:8080
+    volumes:
+      - ./auth-service:/usr/src/app
+
+  api-gateway:
+    build: ./api-gateway
+    image: blog-api-gateway
+    ports:
+      - 9300:80
+    volumes:
+      - ./api-gateway:/var/www/html
