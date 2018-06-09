@@ -4,23 +4,44 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class ApiController
 {
-    public function index()
+    public function __construct() {
+        $this->client = new Client();
+    }
+    public function index(Request $request)
     {
-        $client = new Client([
-            'base_uri' => 'http://auth-service:8080',
-            'timeout' => 2.0
-        ]);
+        $pdo = new \PDO('mysql:host=db;dbname=blog', 'root', 'root');
 
-        $response = $client->request('GET', '/');
+        $query = $pdo->prepare('SELECT * FROM blog_user');
+        $res = $query->execute();
 
-        $jsonResponse = new JsonResponse(['ping' => json_decode($response->getBody())], 200);
-        $jsonResponse->headers->set('Access-Control-Allow-Origin', '*');
-        $jsonResponse->headers->set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        $jsonResponse = new JsonResponse([
+            'ping' => 'ok',
+            'res' => $query->fetchAll()
+        ], 200);
 
         return $jsonResponse;
+    }
+
+    public function login(Request $request)
+    {
+        $response = $this->client->request($request->getMethod(), 'http://auth-service:8080/login');
+
+        $jsonResponse = new JsonResponse(json_decode($response->getBody()), 200);
+
+        return $jsonResponse;  
+    }
+
+    public function register(Request $request)
+    {
+        $response = $this->client->request($request->getMethod(), 'http://auth-service:8080/register');
+
+        $jsonResponse = new JsonResponse(json_decode($response->getBody()), 200);
+
+        return $jsonResponse;  
     }
 }

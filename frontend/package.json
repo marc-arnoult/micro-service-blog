@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@vue/cli-service-global": "^3.0.0-beta.16",
-    "vue": "^2.5.16"
+    "bulma": "^0.7.1",
+    "vue": "^2.5.16",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.16",
