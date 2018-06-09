@@ -11,15 +11,15 @@ services:
     links:
       - api-gateway
   
-  auth-service:
-    build: ./auth-service
-    image: blog-auth-service
+  user-service:
+    build: ./user-service
+    image: blog-user-service
     depends_on:
       - db
     ports:
       - 9400:8080
     volumes:
-      - ./auth-service:/usr/src/app
+      - ./user-service:/usr/src/app
 
   api-gateway:
     build: ./api-gateway
@@ -28,6 +28,8 @@ services:
       - 9300:80
     volumes:
       - ./api-gateway:/var/www/html
+    environment:
+      USER_SERVICE: user-service
   db:
     image: mysql:5.7
     restart: always

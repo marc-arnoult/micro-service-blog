@@ -29,7 +29,7 @@ class ApiController
 
     public function login(Request $request)
     {
-        $response = $this->client->request($request->getMethod(), 'http://auth-service:8080/login');
+        $response = $this->client->request($request->getMethod(), 'http://user-service:8080/login');
 
         $jsonResponse = new JsonResponse(json_decode($response->getBody()), 200);
 
@@ -38,7 +38,7 @@ class ApiController
 
     public function register(Request $request)
     {
-        $response = $this->client->request($request->getMethod(), 'http://auth-service:8080/register');
+        $response = $this->client->request($request->getMethod(), 'http://user-service:8080/register');
 
         $jsonResponse = new JsonResponse(json_decode($response->getBody()), 200);
 
